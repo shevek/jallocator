@@ -9,8 +9,6 @@ import com.google.common.math.LongMath;
 import java.util.concurrent.atomic.AtomicLong;
 import javax.annotation.Nonnegative;
 import javax.annotation.Nonnull;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 
 /**
  *
@@ -18,7 +16,7 @@ import org.apache.commons.logging.LogFactory;
  */
 public class ResourceIterator<T> extends AbstractIterator<T> {
 
-    private static final Log LOG = LogFactory.getLog(ResourceIterator.class);
+    // private static final Logger LOG = LoggerFactory.getLogger(ResourceIterator.class);
     @Nonnull
     private final ResourceProvider<T> resourceProvider;
     @Nonnull

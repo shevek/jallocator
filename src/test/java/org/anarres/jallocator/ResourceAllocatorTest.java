@@ -13,9 +13,9 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.junit.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import static org.junit.Assert.*;
 
 /**
@@ -24,7 +24,7 @@ import static org.junit.Assert.*;
  */
 public class ResourceAllocatorTest {
 
-    private static final Log LOG = LogFactory.getLog(ResourceAllocatorTest.class);
+    private static final Logger LOG = LoggerFactory.getLogger(ResourceAllocatorTest.class);
 
     private static class LongResourceProvider implements ResourceProvider<Long> {
 

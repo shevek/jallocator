@@ -11,8 +11,6 @@ import java.util.Random;
 import java.util.concurrent.atomic.AtomicLong;
 import javax.annotation.Nonnull;
 import javax.annotation.concurrent.ThreadSafe;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 
 /**
  *
@@ -21,7 +19,7 @@ import org.apache.commons.logging.LogFactory;
 @ThreadSafe
 public class ResourceAllocator<T> implements Iterable<T> {
 
-    private static final Log LOG = LogFactory.getLog(ResourceAllocator.class);
+    // private static final Logger LOG = LoggerFactory.getLogger(ResourceAllocator.class);
     private static Random RANDOM = new Random();
     @Nonnull
     private ResourceProvider<T> resourceProvider;

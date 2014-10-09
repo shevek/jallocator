@@ -4,9 +4,9 @@
  */
 package org.anarres.jallocator;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.junit.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import static org.junit.Assert.*;
 
 /**
@@ -15,7 +15,7 @@ import static org.junit.Assert.*;
  */
 public class PermutationGeneratorTest {
 
-    private static final Log LOG = LogFactory.getLog(PermutationGeneratorTest.class);
+    private static final Logger LOG = LoggerFactory.getLogger(PermutationGeneratorTest.class);
 
     private void verify(PermutationGenerator generator) {
         LOG.info("Testing " + generator);

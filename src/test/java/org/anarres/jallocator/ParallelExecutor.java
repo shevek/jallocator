@@ -8,8 +8,8 @@ import com.google.common.base.Throwables;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.Executor;
 import java.util.concurrent.atomic.AtomicReference;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  *
@@ -17,7 +17,7 @@ import org.apache.commons.logging.LogFactory;
  */
 public class ParallelExecutor {
 
-    private static final Log LOG = LogFactory.getLog(ParallelExecutor.class);
+    private static final Logger LOG = LoggerFactory.getLogger(ParallelExecutor.class);
 
     public interface Task {
 

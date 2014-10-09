@@ -8,8 +8,6 @@ import com.google.common.base.Objects;
 import com.google.common.math.LongMath;
 import javax.annotation.Nonnegative;
 import javax.annotation.Nonnull;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 
 /*
  BlackRock cipher
@@ -69,7 +67,7 @@ import org.apache.commons.logging.LogFactory;
  */
 public class PermutationGenerator {
 
-    private static final Log LOG = LogFactory.getLog(PermutationGenerator.class);
+    // private static final Logger LOG = LoggerFactory.getLogger(PermutationGenerator.class);
     /***************************************************************************
      * It's an s-box. You gotta have an s-box
      ***************************************************************************/
