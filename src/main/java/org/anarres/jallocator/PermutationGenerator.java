@@ -40,11 +40,11 @@ import javax.annotation.Nonnull;
  9 ->      7
 
  As you can see on the right hand side, the numbers are in random
- order, and they don't repeaet.
+ order, and they don't repeat.
 
- This is create for port scanning. We can take an index variable
+ This is created for resource allocation. We can take an index variable
  and increment it during a scan, then use this function to
- randomize it, yet be assured that we've probed every IP and port
+ randomize it, yet be assured that we've allocated every resource
  within the range.
 
  The cryptographic strength of this construction depends upon the 
@@ -241,7 +241,7 @@ public class PermutationGenerator {
         if (v < 0)
             throw new IllegalArgumentException("Illegal negative " + purpose + " " + v);
         if (v >= range)
-            throw new IllegalArgumentException("Illegal " + purpose + " " + v + " > " + range);
+            throw new IllegalArgumentException("Illegal " + purpose + " " + v + " >= " + range);
     }
 
     @Nonnegative
