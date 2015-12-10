@@ -4,73 +4,84 @@
  */
 package org.anarres.jallocator;
 
-import com.google.common.base.Objects;
+import com.google.common.base.MoreObjects;
 import com.google.common.math.LongMath;
 import javax.annotation.Nonnegative;
 import javax.annotation.Nonnull;
 
-/*
- BlackRock cipher
-
- (h/t Marsh Ray @marshray for this idea)
-
- This is a randomization/reshuffling function based on a crypto
- "Feistel network" as described in the paper:
-
- 'Ciphers with Arbitrary Finite Domains' 
- by John Black and Phillip Rogaway 
- http://www.cs.ucdavis.edu/~rogaway/papers/subset.pdf
-
- This is a crypto-like construction that encrypts an arbitrary sized
- range. Given a number in the range [0..9999], it'll produce a mapping 
- to a distinct different number in the same range (and back again).
- In other words, it randomizes the order of numbers in a sequence.
-
- For example, it can be used to  randomize the sequence [0..9]:
-    
- 0 ->      6
- 1 ->      4
- 2 ->      8
- 3 ->      1
- 4 ->      9
- 5 ->      3
- 6 ->      0
- 7 ->      5
- 8 ->      2
- 9 ->      7
-
- As you can see on the right hand side, the numbers are in random
- order, and they don't repeat.
-
- This is created for resource allocation. We can take an index variable
- and increment it during a scan, then use this function to
- randomize it, yet be assured that we've allocated every resource
- within the range.
-
- The cryptographic strength of this construction depends upon the 
- number of rounds, and the exact nature of the inner "F()" function.
- Because it's a Feistal network, that "F()" function can be almost
- anything.
-
- We don't care about cryptographic strength, just speed, so we are
- using a trivial F() function.
-
- This is a class of "format-preserving encryption". There are 
- probably better constructions than what I'm using.
- */
 /**
+ * A permutation generator based on the BlackRock cipher.
+ *
+ * <p>
+ * (h/t Marsh Ray @marshray for this idea)
+ *
+ * <p>
+ * This is a randomization/reshuffling function based on a crypto
+ * "Feistel network" as described in the paper:
+ *
+ * 'Ciphers with Arbitrary Finite Domains'
+ * by John Black and Phillip Rogaway
  * http://www.cs.ucdavis.edu/~rogaway/papers/subset.pdf
- * https://raw.github.com/robertdavidgraham/masscan/master/src/rand-blackrock.c
- * 
+ *
+ * <p>
+ * This is a crypto-like construction that encrypts an arbitrary sized
+ * range. Given a number in the range [0..9999], it'll produce a mapping
+ * to a distinct different number in the same range (and back again).
+ * In other words, it randomizes the order of numbers in a sequence.
+ *
+ * <p>
+ * For example, it can be used to randomize the sequence [0..9]:
+ *
+ * <ul>
+ * <li>0 -&gt; 6
+ * <li>1 -&gt; 4
+ * <li>2 -&gt; 8
+ * <li>3 -&gt; 1
+ * <li>4 -&gt; 9
+ * <li>5 -&gt; 3
+ * <li>6 -&gt; 0
+ * <li>7 -&gt; 5
+ * <li>8 -&gt; 2
+ * <li>9 -&gt; 7
+ * </ul>
+ *
+ * <p>
+ * As you can see on the right hand side, the numbers are in random
+ * order, and they don't repeat.
+ *
+ * <p>
+ * This is created for resource allocation. We can take an index variable
+ * and increment it during a scan, then use this function to
+ * randomize it, yet be assured that we've allocated every resource
+ * within the range.
+ *
+ * <p>
+ * The cryptographic strength of this construction depends upon the
+ * number of rounds, and the exact nature of the inner "F()" function.
+ * Because it's a Feistal network, that "F()" function can be almost
+ * anything.
+ *
+ * <p>
+ * We don't care about cryptographic strength, just speed, so we are
+ * using a trivial F() function.
+ *
+ * <p>
+ * This is a class of "format-preserving encryption". There are
+ * probably better constructions than what I'm using.
+ *
+ * <ul>
+ * <li>http://www.cs.ucdavis.edu/~rogaway/papers/subset.pdf
+ * <li>https://raw.github.com/robertdavidgraham/masscan/master/src/rand-blackrock.c
+ * </ul>
  *
  * @author shevek
  */
 public class PermutationGenerator {
 
     // private static final Logger LOG = LoggerFactory.getLogger(PermutationGenerator.class);
-    /***************************************************************************
+    /** *************************************************************************
      * It's an s-box. You gotta have an s-box
-     ***************************************************************************/
+     ************************************************************************** */
     private static char[] sbox = new char[]{
         /* block 1 */
         0x91, 0x58, 0xb3, 0x31, 0x6c, 0x33, 0xda, 0x88,
@@ -125,6 +136,12 @@ public class PermutationGenerator {
     private final long a;
     private final long b;
 
+    /**
+     * Constructs a new PermutationGenerator.
+     *
+     * @param range The size of the finite domain.
+     * @param seed An arbitrary seed for the crypto function. No particular security properties are required.
+     */
     public PermutationGenerator(@Nonnegative long range, long seed) {
         this.range = range;
         this.seed = seed;
@@ -133,13 +150,18 @@ public class PermutationGenerator {
         this.b = parameters.b;
     }
 
+    /**
+     * Returns the size of the finite domain.
+     *
+     * @return the size of the finite domain.
+     */
     @Nonnegative
     public long getRange() {
         return range;
     }
 
-    /***************************************************************************
-     ***************************************************************************/
+    /** *************************************************************************
+     ************************************************************************** */
     private static Parameters init(final long range) {
         /* This algorithm gets very non-random at small numbers, so I'm going
          * to try to fix some constants here to make it work. It doesn't have
@@ -169,11 +191,11 @@ public class PermutationGenerator {
             b++;
         return new Parameters(a, b);
     }
-    /***************************************************************************
+    /** *************************************************************************
      * This is a random meaningless function. Well, if we actually wanted
      * crypto-strength, we'd have to improve it, but for now, we just want
      * some random properties.
-     ***************************************************************************/
+     ************************************************************************** */
     private static long[] primes = new long[]{961752031L, 982324657L, 15485843L, 961752031L,};
 
     @Nonnegative
@@ -244,6 +266,12 @@ public class PermutationGenerator {
             throw new IllegalArgumentException("Illegal " + purpose + " " + v + " >= " + range);
     }
 
+    /**
+     * Permutes a value, that is, returns the value at index m in the permutation of the finite domain.
+     *
+     * @param m The index of the permuted value.
+     * @return The permuted value.
+     */
     @Nonnegative
     public long shuffle(@Nonnegative long m) {
         check(m, "input");
@@ -255,6 +283,12 @@ public class PermutationGenerator {
         return c;
     }
 
+    /**
+     * Un-permutes a value, that is, returns the index of the value m in the permuted finite domain.
+     *
+     * @param m The permuted value.
+     * @return The original index of the permuted value.
+     */
     @Nonnegative
     public long unshuffle(@Nonnegative long m) {
         check(m, "input");
@@ -268,7 +302,7 @@ public class PermutationGenerator {
 
     @Override
     public String toString() {
-        return Objects.toStringHelper(this)
+        return MoreObjects.toStringHelper(this)
                 .add("range", range)
                 .add("seed", seed)
                 .add("rounds", rounds)

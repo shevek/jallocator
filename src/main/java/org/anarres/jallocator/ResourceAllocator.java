@@ -13,6 +13,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.concurrent.ThreadSafe;
 
 /**
+ * A thread-safe permutation-based resource allocator.
  *
  * @author shevek
  */

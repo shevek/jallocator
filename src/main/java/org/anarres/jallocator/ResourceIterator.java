@@ -11,7 +11,11 @@ import javax.annotation.Nonnegative;
 import javax.annotation.Nonnull;
 
 /**
+ * The internal Iterator implementation used by {@link ResourceAllocator}.
  *
+ * You probably don't want to use this directly.
+ *
+ * @see ResourceAllocator
  * @author shevek
  */
 public class ResourceIterator<T> extends AbstractIterator<T> {
